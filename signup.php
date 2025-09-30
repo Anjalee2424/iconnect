@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+// require 'db.php';
 
 $error = '';
 $username = '';
@@ -8,60 +8,64 @@ $department = '';
 $languages_spoken = '';
 $hobbies = '';
 $self_intro = '';
+$country = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $nickname = trim($_POST['nickname'] ?? '');
-    $department = trim($_POST['department'] ?? '');
-    $languages_spoken = trim($_POST['languages_spoken'] ?? '');
-    $hobbies = trim($_POST['hobbies'] ?? '');
-    $self_intro = trim($_POST['self_intro'] ?? '');
+    header('Location: mypage/');
+    // $username = trim($_POST['username'] ?? '');
+    // $password = $_POST['password'] ?? '';
+    // $nickname = trim($_POST['nickname'] ?? '');
+    // $department = trim($_POST['department'] ?? '');
+    // $languages_spoken = trim($_POST['languages_spoken'] ?? '');
+    // $hobbies = trim($_POST['hobbies'] ?? '');
+    // $self_intro = trim($_POST['self_intro'] ?? '');
+    // $country= trim($_POST['country'] ?? '');
+    // $gender= trim($_POST['gender'] ?? '');
 
-    if (!$username || !$password) {
-        $error = "Username and password are required.";
-    } else {
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
-        $stmt->execute([$username]);
-        if ($stmt->fetch()) {
-            $error = "Username already taken.";
-        } else {
-            $picturePath = null;
-            if (!empty($_FILES['picture']['name'])) {
-                $targetDir = "uploads/";
-                if (!is_dir($targetDir)) mkdir($targetDir, 0755, true);
+    // if (!$username || !$password) {
+    //     $error = "Username and password are required.";
+    // } else {
+    //     $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+    //     $stmt->execute([$username]);
+    //     if ($stmt->fetch()) {
+    //         $error = "Username already taken.";
+    //     } else {
+    //         $picturePath = null;
+    //         if (!empty($_FILES['picture']['name'])) {
+    //             $targetDir = "uploads/";
+    //             if (!is_dir($targetDir)) mkdir($targetDir, 0755, true);
 
-                $fileName = basename($_FILES["picture"]["name"]);
-                $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-                $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+    //             $fileName = basename($_FILES["picture"]["name"]);
+    //             $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+    //             $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
 
-                if (!in_array($fileType, $allowedTypes)) {
-                    $error = "Only JPG, JPEG, PNG & GIF files allowed.";
-                } else {
-                    $newFileName = time() . '_' . preg_replace("/[^a-zA-Z0-9_\.-]/", '_', $fileName);
-                    $targetFilePath = $targetDir . $newFileName;
-                    if (!move_uploaded_file($_FILES["picture"]["tmp_name"], $targetFilePath)) {
-                        $error = "Error uploading picture.";
-                    } else {
-                        $picturePath = $targetFilePath;
-                    }
-                }
-            }
+    //             if (!in_array($fileType, $allowedTypes)) {
+    //                 $error = "Only JPG, JPEG, PNG & GIF files allowed.";
+    //             } else {
+    //                 $newFileName = time() . '_' . preg_replace("/[^a-zA-Z0-9_\.-]/", '_', $fileName);
+    //                 $targetFilePath = $targetDir . $newFileName;
+    //                 if (!move_uploaded_file($_FILES["picture"]["tmp_name"], $targetFilePath)) {
+    //                     $error = "Error uploading picture.";
+    //                 } else {
+    //                     $picturePath = $targetFilePath;
+    //                 }
+    //             }
+    //         }
 
-            if (!$error) {
-                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $pdo->prepare("INSERT INTO users 
-                    (username, password, nickname, department, languages_spoken, hobbies, self_intro, picture) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->execute([
-                    $username, $passwordHash, $nickname, $department, 
-                    $languages_spoken, $hobbies, $self_intro, $picturePath
-                ]);
-                header("Location: login.php?registered=1");
-                exit;
-            }
-        }
-    }
+    //         if (!$error) {
+    //             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    //             $stmt = $pdo->prepare("INSERT INTO users 
+    //                 (username, password, nickname, department, languages_spoken, hobbies, self_intro, picture) 
+    //                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    //             $stmt->execute([
+    //                 $username, $passwordHash, $nickname, $department, 
+    //                 $languages_spoken, $hobbies, $self_intro, $picturePath
+    //             ]);
+    //             header("Location: login.php?registered=1");
+    //             exit;
+    //         }
+    //     }
+    // }
 }
 ?>
 

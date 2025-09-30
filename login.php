@@ -1,5 +1,20 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $username = trim($_POST['username'] ?? '');
+  $password = $_POST['password'] ?? '';
+
+  // Dummy authentication for demonstration
+  if ($username === 'test' && $password === 'test') {
+    header('Location: mypage/');
+    exit;
+  } else {
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -32,7 +47,7 @@
     .login-box {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       padding: 40px 30px;
       border-radius: 20px;
       width: 100%;
@@ -111,6 +126,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="container">
@@ -162,4 +178,5 @@
   </svg>
 
 </body>
+
 </html>

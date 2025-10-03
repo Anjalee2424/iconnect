@@ -101,3 +101,15 @@ body {
     width: 2000px;
     height: 1000px;
 }
+
+.container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 40px;
+  background: url('../images/background.jpg') no-repeat center center;
+  background-size: cover;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 1;
+}

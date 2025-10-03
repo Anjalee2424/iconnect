@@ -131,8 +131,7 @@
 <body>
 
   <!-- Header -->
-  
-  <div class="header">iConnect</div>
+  <div class="header">I</div>
 
   <!-- Chat List -->
   <ul class="chat-list">

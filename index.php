@@ -24,7 +24,7 @@ $isLoggedIn = isset($_SESSION["user"]);
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-text">
-      <h1>Talk to the <span>World</span></h1>
+      <h1>Talk to the <span><br>World</span></h1>
       <p>Learn a language for free by chatting with native speakers around the globe. Start meaningful conversations and make real connections.</p>
 
       <?php if ($isLoggedIn): ?>

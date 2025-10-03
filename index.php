@@ -1,242 +1,154 @@
+<?php
+// ==========================
+// Basic PHP Setup
+// ==========================
+session_start();
+$appName = "iConnect";
+$year = date("Y");
+
+// Example session check (optional)
+$isLoggedIn = isset($_SESSION["user"]);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>iConnect Style Landing Page</title>
-  <link rel="stylesheet" href="style.css" />
+  <title><?php echo $appName; ?></title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f9f9ff, #f1f0ff);
+      color: #222;
+    }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 60px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      position: sticky; top: 0; z-index: 1000;
+    }
+    header .logo {
+      font-size: 22px; font-weight: bold; color: #7c4dff;
+    }
+    header nav a {
+      margin-left: 25px; text-decoration: none; color: #333;
+      font-size: 15px; transition: color 0.3s;
+    }
+    header nav a:hover { color: #7c4dff; }
+    .hero {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 80px 60px; gap: 40px;
+    }
+    .hero-text { max-width: 500px; animation: fadeInUp 1s ease; }
+    .hero-text h1 { font-size: 52px; font-weight: 800; margin-bottom: 20px; }
+    .hero-text h1 span { color: #7c4dff; }
+    .hero-text p { font-size: 18px; margin-bottom: 35px; color: #555; line-height: 1.6; }
+    .hero-text button {
+      background: linear-gradient(135deg, #7c4dff, #5c2fff);
+      color: #fff; padding: 15px 35px; border: none; border-radius: 30px;
+      font-size: 16px; cursor: pointer;
+      box-shadow: 0 6px 15px rgba(124, 77, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+    .hero-text button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(124, 77, 255, 0.4);
+    }
+    .hero-image img {
+      max-width: 450px; width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      animation: fadeIn 1.2s ease;
+    }
+    footer {
+      text-align: center; padding: 20px;
+      background: #fff; margin-top: 50px;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+      font-size: 14px; color: #555;
+    }
+    @keyframes fadeInUp { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    @media (max-width: 900px) {
+      .hero { flex-direction: column; text-align: center; padding: 60px 20px; }
+      .hero-text h1 { font-size: 40px; }
+      .hero-image img { margin-top: 30px; }
+    }
+  </style>
 </head>
 <body>
-  <?php include 'components/header.php'; ?>
+  <!-- Navbar -->
+  <header>
+    <div class="logo">🌎 <?php echo $appName; ?></div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#">Web Version</a>
+      <a href="#">English</a>
+    </nav>
+  </header>
 
+  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-text">
-      <h1>Talk to <span class="highlight">the world</span></h1>
-      <p>Chat with native speakers around the world and learn languages for free</p>
-      <a href="login.php"><button>Get started now</button>
+      <h1>Talk to the <span>World</span></h1>
+      <p>Learn a language for free by chatting with native speakers around the globe. Start meaningful conversations and make real connections.</p>
+
+      <?php if ($isLoggedIn): ?>
+        <button id="dashboardBtn">Go to Dashboard</button>
+      <?php else: ?>
+        <button id="startBtn">Get Started Now</button>
+      <?php endif; ?>
     </div>
-    <div class="hero-images">
-      <img src="person1.png" alt="User1" />
-      <img src="person2.png" alt="User2" />
-      <img src="person3.png" alt="User3" />
-    </div>
+
+  <!-- Right side (just one image) -->
+  <div class="hero-image">
+    <img src="images/hello1.png" alt="App preview" 
+         style="max-width:450px; width:100%; height:auto; border-radius:12px;">
+  </div>
+</section>
+
+  <!-- About Section -->
+  <section id="about" style="padding:60px; text-align:center;">
+    <h2 style="font-size:28px; margin-bottom:20px; color:#7c4dff;">About <?php echo $appName; ?></h2>
+    <p style="max-width:600px; margin:0 auto; font-size:16px; color:#555; line-height:1.6;">
+      <?php echo $appName; ?> is a multilingual communication platform where you can connect with people from different cultures, learn languages naturally, and make global friendships.
+    </p>
   </section>
 
-
-  <section class="languages">
-    <img src="flag-en.png" alt="English" />
-    <img src="flag-cn.png" alt="Chinese" />
-    <img src="flag-jp.png" alt="Japanese" />
-    <img src="flag-kr.png" alt="Korean" />
-    <img src="flag-es.png" alt="Spanish" />
-    <img src="flag-fr.png" alt="French" />
-  </section>
-
-  <section class="how-to-use">
-    <h2>How to use iConnect</h2>
-
-    <div class="step">
-      <img src="phone1.png" alt="Join the community" />
-      <div class="text">
-        <h3>1. Join the community</h3>
-        <p>First, download the app and apply for membership. It’s a place to meet native speakers from all over the world.</p>
-      </div>
-    </div>
-
-    <div class="step reverse">
-      <img src="phone2.png" alt="Find a partner" />
-      <div class="text">
-        <h3>2. Find a partner</h3>
-        <p>Once approved, you can easily search for language partners based on your preferences like language, location, or interests.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <img src="phone3.png" alt="Chat" />
-      <div class="text">
-        <h3>3. Let’s have a conversation!</h3>
-        <p>Chat via text, voice, or video. Built-in translation tools help you understand and be understood smoothly.</p>
-      </div>
-    </div>
-  </section>
-
-
-  <section class="map-section">
-    <div class="map-overlay">
-      <h2><span>Search</span><strong class="highlight"> the World</strong></h2>
-      <p>Search for language learning partners by native language, city, and more</p>
-    </div>
-<div class="floating-greetings">
-  <div class="greeting-bubble">
-    <img src="https://i.pravatar.cc/40?img=1" alt="User 1">
-    <span>Hallo</span>
-  </div>
-  <div class="greeting-bubble">
-    <img src="https://i.pravatar.cc/40?img=2" alt="User 2">
-    <span>你好</span>
-  </div>
-  <div class="greeting-bubble">
-    <img src="https://i.pravatar.cc/40?img=3" alt="User 3">
-    <span>こんにちは</span>
-  </div>
-  <div class="greeting-bubble">
-    <img src="https://i.pravatar.cc/40?img=4" alt="User 4">
-    <span>Bonjour</span>
-  </div>
-  <div class="greeting-bubble">
-    <img src="https://i.pravatar.cc/40?img=5" alt="User 5">
-    <span>Hola</span>
-  </div>
-  <div class="greeting-bubble">
-    <img src="https://i.pravatar.cc/40?img=6" alt="User 6">
-    <span>Hello</span>
-  </div>
-  <div class="greeting-bubble">
-    <img src="https://i.pravatar.cc/40?img=7" alt="User 7">
-    <span>안녕하세요</span>
-  </div>
-  <div class="greeting-bubble">
-    <img src="https://i.pravatar.cc/40?img=8" alt="User 8">
-    <span>Olá</span>
-  </div>
-</div>
-  </section>
-
- 
-  <section class="partners-section">
-    <h2>完璧な言語学習パートナーを見つける</h2>
-    <p>世界の反対側でも、隣村でも、どんな場所でも、HelloTalkは言語学習パートナーとのコミュニケーションをサポートします。</p>
-
-    <div class="partner-grid">
-      <div class="card">
-        <img src="https://i.pravatar.cc/150?img=1" alt="">
-        <h3>이수재</h3>
-        <p>한국어 · English</p>
-      </div>
-      <div class="card">
-        <img src="https://i.pravatar.cc/150?img=2" alt="">
-        <h3>Elias</h3>
-        <p>English · 中文</p>
-      </div>
-      <div class="card">
-        <img src="https://i.pravatar.cc/150?img=3" alt="">
-        <h3>Rose</h3>
-        <p>Español · Français</p>
-      </div>
-      <div class="card">
-        <img src="https://i.pravatar.cc/150?img=4" alt="">
-        <h3>Léon</h3>
-        <p>Français · 日本語</p>
-      </div>
-      <div class="card">
-        <img src="https://i.pravatar.cc/150?img=5" alt="">
-        <h3>范明</h3>
-        <p>中文 · English</p>
-      </div>
-      <div class="card">
-        <img src="https://i.pravatar.cc/150?img=6" alt="">
-        <h3>Amy</h3>
-        <p>Español · 日本語</p>
-      </div>
-      <div class="card">
-        <img src="https://i.pravatar.cc/150?img=7" alt="">
-        <h3>Солнце</h3>
-        <p>Русский · English</p>
-      </div>
-      <div class="card">
-        <img src="https://i.pravatar.cc/150?img=8" alt="">
-        <h3>桜子</h3>
-        <p>日本語 · English</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="testimonials">
-    <h2>What our users say</h2>
-    <div class="testimonial-grid">
-      <div class="testimonial">
-        <p>“This app changed how I learn languages. So many friendly people!”</p>
-        <div class="stars">★★★★★</div>
-        <h4>Maria (Spain)</h4>
-      </div>
-      <div class="testimonial">
-        <p>“Super intuitive and helpful. I made real friends abroad.”</p>
-        <div class="stars">★★★★★</div>
-        <h4>Kenji (Japan)</h4>
-      </div>
-      <div class="testimonial">
-        <p>“Best way to practice daily conversations.”</p>
-        <div class="stars">★★★★☆</div>
-        <h4>Anna (Germany)</h4>
-      </div>
-    </div>
-  </section>
-
-  <section class="app-section">
-    <h2>Get the app now</h2>
-    <p>Available on iOS and Android</p>
-    <img src="app-preview.png" alt="App Preview" />
-  </section>
-
-  <section class="cta-section">
-    <h2>Start your language journey today!</h2>
-    <button>Join Hello Connect</button>
-  </section>
-
-  <div class="footer-links">
-    <div>
-      <h4>About</h4>
-      <a href="#">Company</a>
-      <a href="#">Careers</a>
-      <a href="#">Blog</a>
-    </div>
-    <div>
-      <h4>Support</h4>
-      <a href="#">Help Center</a>
-      <a href="#">Contact Us</a>
-      <a href="#">Privacy Policy</a>
-    </div>
-    <div>
-      <h4>Languages</h4>
-      <a href="#">Japanese</a>
-      <a href="#">English</a>
-      <a href="#">Spanish</a>
-    </div>
-  </div>
-
+  <!-- Footer -->
   <footer>
-    &copy; 2025 Hello Connect. All rights reserved.
+    &copy; <?php echo $year; ?> <?php echo $appName; ?>. All rights reserved.
   </footer>
 
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.floating-greetings');
-    const items = Array.from(container.children);
+  <!-- JavaScript -->
+  <script>
+    // Get Started button
+    const startBtn = document.getElementById("startBtn");
+    if(startBtn){
+      startBtn.addEventListener("click", function() {
+        alert("Redirecting you to login...");
+        window.location.href = "login.php";
+      });
+    }
 
-    const row1 = document.createElement('div');
-    const row2 = document.createElement('div');
-    row1.className = 'scroll-row';
-    row2.className = 'scroll-row';
+    // Dashboard button
+    const dashboardBtn = document.getElementById("dashboardBtn");
+    if(dashboardBtn){
+      dashboardBtn.addEventListener("click", function() {
+        window.location.href = "dashboard.php";
+      });
+    }
 
-    items.forEach((el, i) => {
-      const clone1 = el.cloneNode(true);
-      const clone2 = el.cloneNode(true);
-      if (i % 2 === 0) {
-        row1.appendChild(clone1);
-      } else {
-        row2.appendChild(clone2);
-      }
+    // Smooth scroll for nav links
+    document.querySelectorAll("header nav a[href^='#']").forEach(anchor => {
+      anchor.addEventListener("click", function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute("href")).scrollIntoView({
+          behavior: "smooth"
+        });
+      });
     });
-
-    container.innerHTML = '';
-    container.appendChild(row1);
-    container.appendChild(row2);
-
-
-
-    
-  });
-</script>
-
+  </script>
 </body>
 </html>

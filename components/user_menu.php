@@ -1,7 +1,7 @@
   <!-- Bottom Navigation -->
   <div class="bottom-nav">
-    <div class="nav-item active"><a href="./">💬<br> HelloTalk</a></div>
-    <div class="nav-item">📃<br> Moments</div>
-    <div class="nav-item">🔍<br> Search</div>
+    <div class="nav-item active"><a href="./">💬<br> Connect</a></div>
+    <div class="nav-item active"><a href="./search.php">🔍<br> Search</a></div>
     <div class="nav-item">👤<br> Profile</div>
+    <div class="nav-item"><br><a href="./logout.php">Logout</a></div>
   </div>

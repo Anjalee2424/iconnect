@@ -39,110 +39,11 @@ if ($lang === 'ja') {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= $title ?></title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f8f9ff;
-      color: #333;
-    }
-
-    .header {
-      background-color: #4d44f6;
-      color: white;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo a {
-      font-size: 1.8em;
-      font-weight: bold;
-      color: white;
-      text-decoration: none;
-    }
-
-    .nav a {
-      color: white;
-      margin-right: 15px;
-      text-decoration: none;
-    }
-
-    .nav select {
-      padding: 5px;
-      border-radius: 4px;
-    }
-
-    .main-content {
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    .about {
-      text-align: center;
-    }
-
-    h1 {
-      color: #4d44f6;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      text-align: left;
-      max-width: 600px;
-      margin: 20px auto;
-    }
-
-    ul li {
-      background-color: #eae8ff;
-      margin: 10px 0;
-      padding: 12px 20px;
-      border-radius: 10px;
-    }
-
-    .about img {
-      width: 80%;
-      max-width: 600px;
-      border-radius: 15px;
-      margin-top: 30px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    .footer {
-      background-color: #4d44f6;
-      color: white;
-      text-align: center;
-      padding: 15px 0;
-      margin-top: 50px;
-    }
-
-    @media (max-width: 600px) {
-      .header, .nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav a {
-        margin: 10px 0;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="css/default.css" />
+  <link rel="stylesheet" href="css/about.css" />
 </head>
 <body>
-  <header class="header">
-    <div class="logo"><a href="index.html">iConnect</a></div>
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="#">Web Version</a>
-      <select onchange="location = '?lang=' + this.value;">
-        <option value="en" <?= $lang === 'en' ? 'selected' : '' ?>>English</option>
-        <option value="ja" <?= $lang === 'ja' ? 'selected' : '' ?>>日本語</option>
-      </select>
-    </nav>
-  </header>
+  <?php include 'components/header.php'; ?>
 
   <main class="main-content">
     <section class="about">

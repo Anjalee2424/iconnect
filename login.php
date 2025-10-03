@@ -1,4 +1,6 @@
 <?php
+$appName = "iConnect";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $username = trim($_POST['username'] ?? '');
   $password = $_POST['password'] ?? '';
@@ -20,114 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>iConnect Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #fff;
-      min-height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    .login-box {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      padding: 40px 30px;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    .login-box h2 {
-      color: #7c4dff;
-      margin-bottom: 30px;
-      font-size: 28px;
-      font-weight: 600;
-    }
-
-    .login-box input {
-      width: 100%;
-      padding: 12px 15px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      font-size: 16px;
-      outline: none;
-      transition: 0.3s;
-    }
-
-    .login-box input:focus {
-      border-color: #7c4dff;
-      box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.2);
-    }
-
-    .login-box button {
-      background: #7c4dff;
-      color: #fff;
-      padding: 12px;
-      border: none;
-      width: 100%;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .login-box button:hover {
-      background: #651fff;
-    }
-
-    .login-box p {
-      margin-top: 15px;
-      font-size: 14px;
-    }
-
-    .login-box a {
-      color: #7c4dff;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .blob {
-      position: absolute;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .blob.top {
-      top: -400px;
-      right: 200px;
-      width: 2000px;
-      height: 1000px;
-    }
-
-    .blob.bottom {
-      bottom: -300px;
-      left: 300px;
-      width: 2000px;
-      height: 1000px;
-    }
-  </style>
+  <link rel="stylesheet" href="css/default.css" />
+  <link rel="stylesheet" href="css/login.css" />
 </head>
 
 <body>
+  <?php include 'components/header.php'; ?>
 
   <div class="container">
     <div class="login-box">

@@ -15,78 +15,11 @@ $isLoggedIn = isset($_SESSION["user"]);
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?php echo $appName; ?></title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #f9f9ff, #f1f0ff);
-      color: #222;
-    }
-    header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 20px 60px;
-      background: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      position: sticky; top: 0; z-index: 1000;
-    }
-    header .logo {
-      font-size: 22px; font-weight: bold; color: #7c4dff;
-    }
-    header nav a {
-      margin-left: 25px; text-decoration: none; color: #333;
-      font-size: 15px; transition: color 0.3s;
-    }
-    header nav a:hover { color: #7c4dff; }
-    .hero {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 80px 60px; gap: 40px;
-    }
-    .hero-text { max-width: 500px; animation: fadeInUp 1s ease; }
-    .hero-text h1 { font-size: 52px; font-weight: 800; margin-bottom: 20px; }
-    .hero-text h1 span { color: #7c4dff; }
-    .hero-text p { font-size: 18px; margin-bottom: 35px; color: #555; line-height: 1.6; }
-    .hero-text button {
-      background: linear-gradient(135deg, #7c4dff, #5c2fff);
-      color: #fff; padding: 15px 35px; border: none; border-radius: 30px;
-      font-size: 16px; cursor: pointer;
-      box-shadow: 0 6px 15px rgba(124, 77, 255, 0.3);
-      transition: all 0.3s ease;
-    }
-    .hero-text button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(124, 77, 255, 0.4);
-    }
-    .hero-image img {
-      max-width: 450px; width: 100%;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      animation: fadeIn 1.2s ease;
-    }
-    footer {
-      text-align: center; padding: 20px;
-      background: #fff; margin-top: 50px;
-      box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
-      font-size: 14px; color: #555;
-    }
-    @keyframes fadeInUp { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
-    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
-    @media (max-width: 900px) {
-      .hero { flex-direction: column; text-align: center; padding: 60px 20px; }
-      .hero-text h1 { font-size: 40px; }
-      .hero-image img { margin-top: 30px; }
-    }
-  </style>
+  <link rel="stylesheet" href="css/default.css" />
 </head>
 <body>
   <!-- Navbar -->
-  <header>
-    <div class="logo">🌎 <?php echo $appName; ?></div>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#">Web Version</a>
-      <a href="#">English</a>
-    </nav>
-  </header>
+  <?php include 'components/header.php'; ?>
 
   <!-- Hero Section -->
   <section class="hero">

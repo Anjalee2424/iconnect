@@ -1,8 +1,10 @@
 <?php
-$host = 'localhost';
-$db   = 'iconnect';
-$user = 'root';
-$pass = ''; // leave it blank for XAMPP
+require_once 'env.php';
+
+$host = DB_HOST;
+$db   = DB_NAME;
+$user = DB_USER;
+$pass = DB_PASS;
 
 try {
   $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);

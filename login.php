@@ -1,15 +1,37 @@
 <?php
+session_start();
 $appName = "iConnect";
+require_once 'db.php'; // uses your env.php configuration
+
+$error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $username = trim($_POST['username'] ?? '');
   $password = $_POST['password'] ?? '';
 
-  // Dummy authentication for demonstration
-  if ($username === 'test' && $password === 'test') {
-    header('Location: mypage/');
-    exit;
+  if ($username === '' || $password === '') {
+    $error = 'Please enter both username and password.';
   } else {
+    try {
+      // Find the user by username
+      $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+      $stmt->execute([$username]);
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      // Check if user exists and password matches
+      if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['nickname'] = $user['nickname'] ?? '';
+
+        header('Location: mypage/');
+        exit;
+      } else {
+        $error = 'Invalid username or password.';
+      }
+    } catch (PDOException $e) {
+      $error = 'Database error: ' . $e->getMessage();
+    }
   }
 }
 ?>
@@ -32,11 +54,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="container">
     <div class="login-box">
       <h2>Welcome to iConnect</h2>
+
+      <!-- Show error message -->
+      <?php if ($error): ?>
+        <p style="color: #ff4d4d; text-align:center;"><?= htmlspecialchars($error) ?></p>
+      <?php endif; ?>
+
       <form action="login.php" method="POST">
         <input type="text" name="username" placeholder="Username" required />
         <input type="password" name="password" placeholder="Password" required />
         <button type="submit">Login</button>
       </form>
+
       <p>Don't have an account? <a href="signup.php">Sign Up</a></p>
     </div>
   </div>
@@ -78,5 +107,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </svg>
 
 </body>
-
 </html>

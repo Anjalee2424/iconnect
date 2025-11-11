@@ -18,52 +18,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $languages_spoken = trim($_POST['languages_spoken'] ?? '');
   $hobbies = trim($_POST['hobbies'] ?? '');
   $self_intro = trim($_POST['self_intro'] ?? '');
-  $country= trim($_POST['country'] ?? '');
-  $gender= trim($_POST['gender'] ?? '');
+  $country = trim($_POST['country'] ?? '');
+  $gender = trim($_POST['gender'] ?? '');
 
   if (!$username || !$password) {
-      $error = "Username and password are required.";
+    $error = "Username and password are required.";
   } else {
-      $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
-      $stmt->execute([$username]);
-      if ($stmt->fetch()) {
-          $error = "Username already taken.";
-      } else {
-          $picturePath = null;
-          if (!empty($_FILES['picture']['name'])) {
-              $targetDir = "uploads/";
-              if (!is_dir($targetDir)) mkdir($targetDir, 0755, true);
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    if ($stmt->fetch()) {
+      $error = "Username already taken.";
+    } else {
+      $picturePath = null;
+      if (!empty($_FILES['picture']['name'])) {
+        $targetDir = "uploads/";
+        if (!is_dir($targetDir)) mkdir($targetDir, 0755, true);
 
-              $fileName = basename($_FILES["picture"]["name"]);
-              $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-              $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+        $fileName = basename($_FILES["picture"]["name"]);
+        $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
 
-              if (!in_array($fileType, $allowedTypes)) {
-                  $error = "Only JPG, JPEG, PNG & GIF files allowed.";
-              } else {
-                  $newFileName = time() . '_' . preg_replace("/[^a-zA-Z0-9_\.-]/", '_', $fileName);
-                  $targetFilePath = $targetDir . $newFileName;
-                  if (!move_uploaded_file($_FILES["picture"]["tmp_name"], $targetFilePath)) {
-                      $error = "Error uploading picture.";
-                  } else {
-                      $picturePath = $targetFilePath;
-                  }
-              }
+        if (!in_array($fileType, $allowedTypes)) {
+          $error = "Only JPG, JPEG, PNG & GIF files allowed.";
+        } else {
+          $newFileName = time() . '_' . preg_replace("/[^a-zA-Z0-9_\.-]/", '_', $fileName);
+          $targetFilePath = $targetDir . $newFileName;
+          if (!move_uploaded_file($_FILES["picture"]["tmp_name"], $targetFilePath)) {
+            $error = "Error uploading picture.";
+          } else {
+            $picturePath = $targetFilePath;
           }
-
-          if (!$error) {
-              $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-              $stmt = $pdo->prepare("INSERT INTO users 
-                  (username, password, nickname, department, languages_spoken, hobbies, self_intro, picture) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-              $stmt->execute([
-                  $username, $passwordHash, $nickname, $department, 
-                  $languages_spoken, $hobbies, $self_intro, $picturePath
-              ]);
-              header("Location: login.php?registered=1");
-              exit;
-          }
+        }
       }
+
+      if (!$error) {
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $pdo->prepare("INSERT INTO users 
+                  (username, password, nickname, department,gender, languages_spoken, hobbies, self_intro, picture) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([
+          $username,
+          $passwordHash,
+          $nickname,
+          $department,
+          $gender,
+          $languages_spoken,
+          $hobbies,
+          $self_intro,
+          $picturePath
+        ]);
+        header("Location: login.php?registered=1");
+        exit;
+      }
+    }
   }
 }
 ?>
@@ -101,6 +108,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <label for="department">Department</label>
       <input type="text" id="department" name="department" value="<?= htmlspecialchars($department) ?>" />
+
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender" required>
+      <option value="" disabled selected>Select your gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+      </select>
+
 
       <label for="languages_spoken">Languages Spoken</label>
       <input type="text" id="languages_spoken" name="languages_spoken" value="<?= htmlspecialchars($languages_spoken) ?>" placeholder="e.g. English, Japanese" />

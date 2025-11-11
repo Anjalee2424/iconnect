@@ -8,5 +8,6 @@ CREATE TABLE users (
   hobbies VARCHAR(255),
   self_intro TEXT,
   picture VARCHAR(255),
+  gender TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

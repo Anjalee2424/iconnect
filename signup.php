@@ -54,18 +54,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       if (!$error) {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $pdo->prepare("INSERT INTO users 
-                  (username, password, nickname, department,gender, languages_spoken, hobbies, self_intro, picture) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+  (username, password, nickname, department, gender, languages_spoken, hobbies, self_intro, picture) 
+  VALUES (:username, :password, :nickname, :department, :gender, :languages_spoken, :hobbies, :self_intro, :picture)");
+
         $stmt->execute([
-          $username,
-          $passwordHash,
-          $nickname,
-          $department,
-          $gender,
-          $languages_spoken,
-          $hobbies,
-          $self_intro,
-          $picturePath
+          ':username' => $username,
+          ':password' => $passwordHash,
+          ':nickname' => $nickname,
+          ':department' => $department,
+          ':gender' => $gender,
+          ':languages_spoken' => $languages_spoken,
+          ':hobbies' => $hobbies,
+          ':self_intro' => $self_intro,
+          ':picture' => $picturePath
         ]);
         header("Location: login.php?registered=1");
         exit;
@@ -111,10 +112,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <label for="gender">Gender</label>
       <select id="gender" name="gender" required>
-      <option value="" disabled selected>Select your gender</option>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option value="other">Other</option>
+        <option value="" disabled selected>Select your gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
       </select>
 
 

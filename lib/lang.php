@@ -3,20 +3,71 @@
 class Lang
 {
     const langs = [
-        'ja' => ['label' => 'Japanese - 日本語', 'voice' => "bqpOyYNUu11tjjvRUbKn"],
-        'en' => ['label' => 'English - 英語', 'voice' => "21m00Tcm4TlvDq8ikWAM"],
-        'es' => ['label' => 'Español - スペイン語', 'voice' => ""],
-        'de' => ['label' => 'Deutsch - ドイツ語', 'voice' => ""],
-        'fr' => ['label' => 'Français - フランス語', 'voice' => "kwhMCf63M8O3rCfnQ3oQ"],
-        'bn' => ['label' => 'বাংলা - ベンガル語', 'voice' => "WiaIVvI1gDL4vT4y7qUU"],
-        'zh' => ['label' => '中文 - 中国語', 'voice' => ""],
-        'vi' => ['label' => 'Tiếng Việt - ベトナム語', 'voice' => ""],
-        'bn' => ['label' => 'বাংলা - ベンガル語', 'voice' => "WiaIVvI1gDL4vT4y7qUU"],
-        'si' => ['label' => 'සිංහල - シンハラ語', 'voice' => ""],
-        'id' => ['label' => 'Bahasa Indonesia - インドネシア語', 'voice' => "4h05pJAlcSqTMs5KRd8X"],
-        'ne' => ['label' => 'नेपाली - ネパール語', 'voice' => ""],
-        'mn' => ['label' => 'Монгол - モンゴル語', 'voice' => ""],
-        'my' => ['label' => 'မြန်မာ - ミャンマー語', 'voice' => ""],
+        'ja' => [
+            'lang'  => "ja-JP",
+            'label' => "Japanese - 日本語",
+            'voice' => "bqpOyYNUu11tjjvRUbKn"
+        ],
+        'en' => [
+            'lang'  => "en-US",
+            'label' => "English - 英語",
+            'voice' => "21m00Tcm4TlvDq8ikWAM"
+        ],
+        'es' => [
+            'lang'  => "es-ES",
+            'label' => "Español - スペイン語",
+            'voice' => "21m00Tcm4TlvDq8ikWAM"
+        ],
+        'de' => [
+            'lang'  => "de-DE",
+            'label' => "Deutsch - ドイツ語",
+            'voice' => "21m00Tcm4TlvDq8ikWAM"
+        ],
+        'fr' => [
+            'lang'  => "fr-FR",
+            'label' => "Français - フランス語",
+            'voice' => "kwhMCf63M8O3rCfnQ3oQ"
+        ],
+        'bn' => [
+            'lang'  => "bn-BD",
+            'label' => "বাংলা - ベンガル語",
+            'voice' => "WiaIVvI1gDL4vT4y7qUU"
+        ],
+        'zh' => [
+            'lang'  => "zh-CN",
+            'label' => "中文 - 中国語",
+            'voice' => "21m00Tcm4TlvDq8ikWAM"
+        ],
+        'vi' => [
+            'lang'  => "vi-VN",
+            'label' => "Tiếng Việt - ベトナム語",
+            'voice' => "21m00Tcm4TlvDq8ikWAM"
+        ],
+        'si' => [
+            'lang'  => "si-LK",
+            'label' => "සිංහල - シンハラ語",
+            'voice' => "21m00Tcm4TlvDq8ikWAM"
+        ],
+        'id' => [
+            'lang'  => "id-ID",
+            'label' => "Bahasa Indonesia - インドネシア語",
+            'voice' => "4h05pJAlcSqTMs5KRd8X"
+        ],
+        'ne' => [
+            'lang'  => "ne-NP",
+            'label' => "नेपाली - ネパール語",
+            'voice' => "21m00Tcm4TlvDq8ikWAM"
+        ],
+        'mn' => [
+            'lang'  => "mn-MN",
+            'label' => "Монгол - モンゴル語",
+            'voice' => "21m00Tcm4TlvDq8ikWAM"
+        ],
+        'my' => [
+            'lang'  => "my-MM",
+            'label' => "မြန်မာ - ミャンマー語",
+            'voice' => "21m00Tcm4TlvDq8ikWAM"
+        ],
     ];
 
     public static function getLangInfo($code)

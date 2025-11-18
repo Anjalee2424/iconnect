@@ -1,168 +1,68 @@
 <?php
-$filename = "messages.txt";
-
-// If new message is posted
-if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST["message"])) {
-    $msg = htmlspecialchars($_POST["message"]);
-    file_put_contents($filename, $msg . "\n", FILE_APPEND);
-    exit;
-}
+require_once __DIR__ . '/../lib/lang.php';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat UI</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .chat-container {
-            width: 400px;
-            max-width: 100%;
-            height: 600px;
-            background: #fff;
-            border-radius: 25px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-
-        .chat-header {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            background: #fff;
-        }
-
-        .chat-header h3 {
-            margin: 0;
-            font-size: 16px;
-        }
-
-        .chat-header span {
-            font-size: 12px;
-            color: gray;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            background: #fafafa;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            margin: 10px 0;
-            max-width: 75%;
-            padding: 10px 15px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.4;
-            word-wrap: break-word;
-        }
-
-        .sent {
-            background: linear-gradient(135deg, #7c4dff, #c47dff, #fcaee4);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        .received {
-            background: #f1f0f0;
-            color: black;
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-
-        .chat-input {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-top: 1px solid #eee;
-            background: #fff;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 10px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            outline: none;
-        }
-
-        .chat-input button {
-            background: #7c4dff;
-            border: none;
-            color: white;
-            margin-left: 10px;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Socket.io Chat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/chat.css" />
 </head>
 
-<body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h3>Roberto Martinez</h3>
-            <span>Active 2m ago</span>
-        </div>
+<body class="bg-gray-100 h-screen flex flex-col items-center p-6">
+  <div class="w-full max-w-md mb-4 flex items-center justify-between">
 
-        <!-- Messages -->
-        <div class="chat-messages" id="chat-box"></div>
-
-        <!-- Input -->
-        <div class="chat-input">
-            <input type="text" id="msg" placeholder="Type a message">
-            <button onclick="sendMessage()">➤</button>
-        </div>
+    <div>
+      <label for="langSelect" class="sr-only">Language</label>
+      <div>
+        <label for="langSelect" class="sr-only">Language</label>
+        <select id="langSelect" class="border rounded px-2 py-1">
+          <?php foreach (Lang::langs as $code => $info): ?>
+            <option value="<?= htmlspecialchars($code) ?>" data-lang="<?= $info['lang'] ?>">
+              <?= htmlspecialchars($info['label']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
     </div>
+  </div>
 
-    <?php include '../components/user_menu.php'; ?>
+  <div
+    id="chat-box"
+    class="chat-messages w-full max-w-md flex-1 overflow-y-auto border rounded-lg bg-white shadow p-4 mb-4">
+  </div>
 
-    <script>
-        function loadMessages() {
-            fetch("messages.php")
-                .then(res => res.text())
-                .then(data => {
-                    document.getElementById("chat-box").innerHTML = data;
-                    let box = document.getElementById("chat-box");
-                    box.scrollTop = box.scrollHeight;
-                });
-        }
+  <form
+    id="chatForm"
+    class="w-full max-w-md flex space-x-2"
+    autocomplete="off">
+    <input
+      id="msgInput"
+      type="text"
+      placeholder="メッセージを入力..."
+      data-i18n-placeholder="placeholder_msg"
+      class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+    <button
+      type="submit"
+      id="sendBtn"
+      class="bg-blue-500 text-white rounded-lg px-4 hover:bg-blue-600 transition"
+      data-i18n="send_button">
+      送信
+    </button>
+    <button
+      type="button"
+      id="micBtn"
+      class="bg-gray-300 text-black rounded-lg px-3 hover:bg-gray-400">
+      🎤
+    </button>
+  </form>
 
-        function sendMessage() {
-            let msg = document.getElementById("msg").value;
-            if (msg.trim() === "") return;
-
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", "chat.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.send("message=" + encodeURIComponent(msg));
-
-            document.getElementById("msg").value = "";
-            setTimeout(loadMessages, 300); // reload after send
-        }
-
-        // Refresh every 2 seconds
-        setInterval(loadMessages, 2000);
-        window.onload = loadMessages;
-    </script>
+  <script src="../js/env.js" defer></script>
+  <script src="../js/app.js" defer></script>
 </body>
 
 </html>

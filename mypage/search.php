@@ -40,17 +40,19 @@ try {
                 <?php foreach ($users as $user): ?>
                     <?php
                     // tags が「serious-learners,travel,fashion」みたいなカンマ区切りなら配列に変換
-                    $tagArray = array_map('trim', explode(',', $user['hobbies']));
+                    $tagArray = array_map('trim', explode(',', $user['languages_spoken'] ?? ''));
                     ?>
                     <form action="friends/add.php" method="post">
                         <div class="profile" data-tags="<?php echo htmlspecialchars(implode(' ', $tagArray)); ?>">
-                            <img src="<?php echo htmlspecialchars($user['picture']); ?>" alt="<?php echo htmlspecialchars($user['name']); ?>">
+                            <img src="../<?= htmlspecialchars($user['picture'] ?? 'default.jpg') ?>?tmp=<?= time() ?>"
+                                class="profile-pic-preview"
+                                id="profilePreview">
                             <div class="profile-info">
                                 <h3><?php echo htmlspecialchars($user['username']); ?></h3>
                                 <p><?php echo htmlspecialchars($user['self_intro']); ?></p>
                                 <div class="tags">
                                     <?php foreach ($tagArray as $tag): ?>
-                                        <span></span>
+                                        <span><?= $tag ?></span>
                                     <?php endforeach; ?>
                                 </div>
                                 <button class="connect-btn">Connect</button>
@@ -64,6 +66,8 @@ try {
         </div>
     </div>
 
+    <?php include '../components/user_menu.php'; ?>
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const filterButtons = document.querySelectorAll('.filters button');

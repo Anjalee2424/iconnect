@@ -1,7 +1,5 @@
 <?php
-session_start();
-$appName = "iConnect";
-require_once 'db.php'; // uses your env.php configuration
+require 'app.php';
 
 $error = '';
 

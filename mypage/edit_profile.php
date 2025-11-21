@@ -1,8 +1,5 @@
 <?php
-require_once '../lib/lang.php';
-require_once '../db.php';   // PDO connection
-
-session_start();
+require_once '../app.php';
 
 // =====================================================
 // ★ Require login

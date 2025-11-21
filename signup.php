@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+require 'app.php';
 
 $error = '';
 $username = '';

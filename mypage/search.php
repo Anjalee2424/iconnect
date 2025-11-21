@@ -1,9 +1,13 @@
 <?php
-require '../db.php'; // ← データベース接続
+require_once '../app.php';
+
+$user_id = $_SESSION['user_id'];
 
 try {
     // users テーブルからデータ取得（必要なカラム名に合わせて変更OK）
-    $stmt = $pdo->query("SELECT * FROM users");
+    $sql = "SELECT * FROM users WHERE id != :me";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':me' => $user_id]);
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Database query failed: " . $e->getMessage());
@@ -16,6 +20,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find Partners</title>
+    <link rel="stylesheet" href="../css/mypage.css">
     <link rel="stylesheet" href="../css/search.css">
     <style>
         .hide {
@@ -25,6 +30,8 @@ try {
 </head>
 
 <body>
+    <!-- Header -->
+    <div class="header">Search Friends</div>
     <div class="container">
         <h1>Find Partners</h1>
 
@@ -42,9 +49,12 @@ try {
                     // tags が「serious-learners,travel,fashion」みたいなカンマ区切りなら配列に変換
                     $tagArray = array_map('trim', explode(',', $user['languages_spoken'] ?? ''));
                     ?>
-                    <form action="friends/add.php" method="post">
+                    <form action="../friends/add.php" method="post">
+                        <!-- フレンドID -->
+                        <input type="hidden" name="friend_id" value="<?= htmlspecialchars($user['id']) ?>">
+
                         <div class="profile" data-tags="<?php echo htmlspecialchars(implode(' ', $tagArray)); ?>">
-                            <img src="../<?= htmlspecialchars($user['picture'] ?? 'default.jpg') ?>?tmp=<?= time() ?>"
+                            <img src="../<?= htmlspecialchars($user['picture'] ?? 'non_avater.svg') ?>?tmp=<?= time() ?>"
                                 class="profile-pic-preview"
                                 id="profilePreview">
                             <div class="profile-info">
@@ -67,7 +77,7 @@ try {
     </div>
 
     <?php include '../components/user_menu.php'; ?>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const filterButtons = document.querySelectorAll('.filters button');

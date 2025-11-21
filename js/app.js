@@ -1,9 +1,23 @@
 // ================================
 // 環境チェック
 // ================================
-if (typeof HOST === "undefined" || HOST === "") {
-    alert("HOSTをenv.jsで設定してください");
+if (typeof CHAT_HOST === "undefined" || CHAT_HOST === "") {
+    alert("CHAT_HOSTをenv.phpで設定してください");
 }
+
+if (typeof ROOM_ID === "undefined" || ROOM_ID === "") {
+    alert("ROOM_IDが設定されていません");
+}
+
+if (typeof USER_NAME === "undefined" || USER_NAME === "") {
+    alert("USER_NAMEが設定されていません");
+}
+
+const userName = USER_NICKNAME;
+const roomId = ROOM_ID;
+
+document.getElementById("host").textContent = CHAT_HOST;
+document.getElementById("room_id").textContent = ROOM_ID;
 
 // ================================
 // DOM要素取得
@@ -18,16 +32,14 @@ const micBtn = document.getElementById("micBtn");
 // ================================
 // サーバー接続
 // ================================
-const socket = io(HOST, { transports: ["websocket"] });
-const roomId = "room1";
-const userName = "User" + Math.floor(Math.random() * 1000);
+const socket = io(CHAT_HOST, { transports: ["websocket"] });
 
 // 接続時
 socket.on("connect", () => {
     console.log("🟢 Connected:", socket.id);
     socket.name = userName;
     socket.emit("join_room", { roomId, userName });
-    append(`${userName} joined the chat`, "system message");
+    append(`🟢 ${userName} joined the chat`, "system message");
 });
 
 // ================================
@@ -45,7 +57,7 @@ socket.on("chat_message", async (data) => {
     append(`🔵 翻訳中...`);
 
     try {
-        const res = await fetch(`${HOST}/api/translate`, {
+        const res = await fetch(`${CHAT_HOST}/api/translate`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text, fromLang, toLang }),

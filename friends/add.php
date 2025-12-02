@@ -21,5 +21,5 @@ if ($stmt->rowCount() === 0) {
     $stmt->execute([$currentUserId, $friendId]);
 }
 
-header("Location: ../friends/list.php");
+header("Location: ../mypage");
 exit;

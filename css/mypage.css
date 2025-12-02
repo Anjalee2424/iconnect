@@ -5,7 +5,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f5f2ff;
+ /*background: #f5f2ff;*/
+
   color: #333;
 }
 
@@ -125,7 +126,8 @@ a {
 /* =========================================
    📦 Form Container / Profile
 ========================================= */
-.container {
+
+.form {
   max-width: 700px;
   margin: 40px auto;
   background: #fff;

@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class='success'>Profile updated successfully!</div>
     <?php endif ?>
 
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form class="form" action="" method="POST" enctype="multipart/form-data">
 
         <!-- Profile Picture -->
         <div>

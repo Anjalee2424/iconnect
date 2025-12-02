@@ -22,19 +22,13 @@ try {
     <title>Find Partners</title>
     <link rel="stylesheet" href="../css/mypage.css">
     <link rel="stylesheet" href="../css/search.css">
-    <style>
-        .hide {
-            display: none;
-        }
-    </style>
 </head>
 
 <body>
     <!-- Header -->
-    <div class="header">Search Friends</div>
-    <div class="container">
-        <h1>Find Partners</h1>
+    <h1>Find Partners</h1>
 
+    <div class="conatainer">
         <div class="filters">
             <button class="active" data-filter="all">All</button>
             <button data-filter="serious-learners">Serious Learners</button>

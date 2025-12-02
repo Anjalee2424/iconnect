@@ -5,7 +5,8 @@ $user_id = $_SESSION['user_id'] ?? null;
 $friend_id = $_GET['friend_id'] ?? null;
 
 if (!$user_id || !$friend_id) {
-    die("Invalid access.");
+    header('Location: ../login.php');
+    exit;
 }
 
 

@@ -69,6 +69,7 @@ function existsChatRoom($pdo, $user1_id, $user2_id)
     <h2>Chart Room</h2>
     <div>
         <div id="host"></div>
+        <div id="path"></div>
         <div id="room_id"><?= $room_id ?></div>
         <div id="friend_id"><?= $friend_id ?></div>
     </div>
@@ -121,6 +122,7 @@ function existsChatRoom($pdo, $user1_id, $user2_id)
 
     <script>
         const CHAT_HOST = '<?= CHAT_HOST ?>';
+        const CHAT_PATH = '<?= CHAT_PATH ?>';
         const ROOM_ID = '<?= $room_id ?>';
         const USER_ID = <?= $user_id ?>;
         const USER_NAME = '<?= htmlspecialchars($user['username']) ?>';

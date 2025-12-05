@@ -15,6 +15,7 @@ let chat_host = (typeof CHAT_HOST !== "undefined") ? CHAT_HOST : "";
 let chat_path = (typeof CHAT_PATH !== "undefined") ? CHAT_PATH : "";
 
 document.getElementById("host").textContent = chat_host;
+document.getElementById("path").textContent = chat_path;
 document.getElementById("room_id").textContent = ROOM_ID;
 
 // ================================

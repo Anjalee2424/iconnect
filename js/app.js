@@ -11,8 +11,16 @@ if (typeof USER_NAME === "undefined" || USER_NAME === "") {
 
 const userName = USER_NICKNAME;
 const roomId = ROOM_ID;
-let chat_host = (typeof CHAT_HOST !== "undefined") ? CHAT_HOST : "";
-let chat_path = (typeof CHAT_PATH !== "undefined") ? CHAT_PATH : "";
+let chat_host = (typeof CHAT_HOST !== "undefined") 
+                ? CHAT_HOST 
+                : window.location.protocol + "//" + window.location.host;
+
+// chat_path: サブディレクトリパスを自動設定
+let chat_path = (typeof CHAT_PATH !== "undefined") 
+                ? CHAT_PATH 
+                : "/chat_server"; 
+
+// ============== 修正箇所 ここまで ==============
 
 document.getElementById("host").textContent = chat_host;
 document.getElementById("path").textContent = chat_path;

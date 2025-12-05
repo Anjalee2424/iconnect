@@ -26,9 +26,9 @@ try {
 
 <body>
     <!-- Header -->
-    <h1>Find Partners</h1>
+    <div class="container">
+        <h1>Find Partners</h1>
 
-    <div class="conatainer">
         <div class="filters">
             <button class="active" data-filter="all">All</button>
             <button data-filter="serious-learners">Serious Learners</button>
@@ -52,7 +52,7 @@ try {
                                 class="profile-pic-preview"
                                 id="profilePreview">
                             <div class="profile-info">
-                                <h3><?php echo htmlspecialchars($user['username']); ?></h3>
+                                <h3><?php echo htmlspecialchars($user['nickname']); ?></h3>
                                 <p><?php echo htmlspecialchars($user['self_intro']); ?></p>
                                 <div class="tags">
                                     <?php foreach ($tagArray as $tag): ?>

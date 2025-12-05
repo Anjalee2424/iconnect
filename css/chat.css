@@ -95,3 +95,17 @@ body {
     height: 40px;
     cursor: pointer;
 }
+
+/* 翻訳中のパルスアニメーション */
+.translating-pulse {
+    color: #666;
+    
+    font-style: italic;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}

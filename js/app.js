@@ -47,6 +47,8 @@ socket.on("connect", () => {
 // ================================
 socket.on("chat_message", async (data) => {
     const { text, sender, lang: fromLang } = data;
+    
+    // 通常メッセージを表示
     append(`${sender}: ${text}`, "message received");
 
     if (sender === userName) return; // 自分のメッセージは翻訳不要
@@ -54,7 +56,9 @@ socket.on("chat_message", async (data) => {
     const toLang = langSelect.value;
     if (fromLang === toLang) return; // 同じ言語なら翻訳不要
 
-    append(`🔵 翻訳中...`);
+    // ★変更点1: 翻訳中メッセージを表示し、その要素を変数に保存
+    // CSSクラス 'translating-pulse' を適用
+    const loadingElement = append(`🔵 翻訳中...`, "translating-pulse");
 
     try {
         const res = await fetch(`${CHAT_HOST}/api/translate`, {
@@ -63,6 +67,10 @@ socket.on("chat_message", async (data) => {
             body: JSON.stringify({ text, fromLang, toLang }),
         });
         const result = await res.json();
+
+        // ★変更点2: API応答が帰ってきたら、翻訳中メッセージを削除
+        if (loadingElement) loadingElement.remove();
+
         if (result.translatedText) {
             append(`🌍 ${sender}: ${result.translatedText}`);
         } else {
@@ -70,6 +78,8 @@ socket.on("chat_message", async (data) => {
         }
     } catch (err) {
         console.error("Translation API error:", err);
+        // エラー時も翻訳中メッセージを削除
+        if (loadingElement) loadingElement.remove();
         append("⚠️ 翻訳に失敗しました（ネットワークエラー）");
     }
 });
@@ -98,6 +108,9 @@ function append(msg, className="") {
     if (className) div.className = className;
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight; // 常にスクロール最下部
+    
+    // 後で削除できるように、作成したdiv要素を呼び出し元に返す
+    return div; 
 }
 
 // ================================

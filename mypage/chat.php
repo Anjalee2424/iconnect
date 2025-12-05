@@ -5,7 +5,8 @@ $user_id = $_SESSION['user_id'] ?? null;
 $friend_id = $_GET['friend_id'] ?? null;
 
 if (!$user_id || !$friend_id) {
-    die("Invalid access.");
+    header('Location: ../login.php');
+    exit;
 }
 
 
@@ -23,27 +24,33 @@ $friend = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // 🔥 チャットルームを取得 or 作成する
 // 既存ルームを探す
-$sql = "
-    SELECT id 
-    FROM chat_rooms
-    WHERE (user1_id = ? AND user2_id = ?)
-       OR (user1_id = ? AND user2_id = ?)
-    LIMIT 1";
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$user_id, $friend_id, $friend_id, $user_id]);
-$room = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if ($room) {
-    // 既存ルームが見つかった場合
-    $room_id = $room["id"];
-} else {
+$room = existsChatRoom($pdo, $user_id, $friend_id);
+if (!$room || empty($room["id"])) {
     // ルームがなければ新規作成
     $sql = "INSERT INTO chat_rooms (id, user1_id, user2_id) VALUES (UUID(), ?, ?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$user_id, $friend_id]);
+
+    // 作成したルームを再取得
+    $room = existsChatRoom($pdo, $user_id, $friend_id);
 }
 
+$room_id = $room["id"];
+
+function existsChatRoom($pdo, $user1_id, $user2_id)
+{
+    $sql = "
+        SELECT id 
+        FROM chat_rooms
+        WHERE (user1_id = ? AND user2_id = ?)
+           OR (user1_id = ? AND user2_id = ?)
+        LIMIT 1";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$user1_id, $user2_id, $user2_id, $user1_id]);
+    $room = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $room;
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,8 +69,8 @@ if ($room) {
     <h2>Chart Room</h2>
     <div>
         <div id="host"></div>
-        <div id="room_id"></div>
-        <div id="friend_id"></div>
+        <div id="room_id"><?= $room_id ?></div>
+        <div id="friend_id"><?= $friend_id ?></div>
     </div>
     <div class="w-full max-w-md mb-4 flex items-center justify-between">
 
@@ -120,7 +127,7 @@ if ($room) {
         const USER_NICKNAME = '<?= htmlspecialchars($user['nickname']) ?>';
         const FRIEND_ID = <?= $friend_id ?>;
     </script>
-    <script src="../js/app.js" defer></script>
+    <script src="../js/app.js"></script>
 </body>
 
 </html>

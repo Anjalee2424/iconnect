@@ -5,3 +5,4 @@ const DB_PASS = ""; // leave it blank for XAMPP
 const DB_NAME = "iconnect";
 
 const CHAT_HOST = "http://172.16.2.xx:3000";
+const CHAT_PATH = "/chat_server";

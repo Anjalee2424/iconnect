@@ -1,10 +1,6 @@
 // ================================
 // 環境チェック
 // ================================
-if (typeof CHAT_HOST === "undefined" || CHAT_HOST === "") {
-    alert("CHAT_HOSTをenv.phpで設定してください");
-}
-
 if (typeof ROOM_ID === "undefined" || ROOM_ID === "") {
     alert("ROOM_IDが設定されていません");
 }
@@ -15,8 +11,10 @@ if (typeof USER_NAME === "undefined" || USER_NAME === "") {
 
 const userName = USER_NICKNAME;
 const roomId = ROOM_ID;
+let chat_host = (typeof CHAT_HOST !== "undefined") ? CHAT_HOST : "";
+let chat_path = (typeof CHAT_PATH !== "undefined") ? CHAT_PATH : "";
 
-document.getElementById("host").textContent = CHAT_HOST;
+document.getElementById("host").textContent = chat_host;
 document.getElementById("room_id").textContent = ROOM_ID;
 
 // ================================
@@ -32,7 +30,13 @@ const micBtn = document.getElementById("micBtn");
 // ================================
 // サーバー接続
 // ================================
-const socket = io(CHAT_HOST, { transports: ["websocket"] });
+// const socket = io(CHAT_HOST, { transports: ["websocket"] });
+const socket = io(
+    chat_host,
+    {
+        transports: ["websocket"],
+        path: `${chat_path}/socket.io`
+    });
 
 // 接続時
 socket.on("connect", () => {
@@ -47,7 +51,7 @@ socket.on("connect", () => {
 // ================================
 socket.on("chat_message", async (data) => {
     const { text, sender, lang: fromLang } = data;
-    
+
     // 通常メッセージを表示
     append(`${sender}: ${text}`, "message received");
 
@@ -102,15 +106,15 @@ form.addEventListener("submit", (e) => {
 // ================================
 // 表示関数
 // ================================
-function append(msg, className="") {
+function append(msg, className = "") {
     const div = document.createElement("div");
     div.innerHTML = msg;
     if (className) div.className = className;
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight; // 常にスクロール最下部
-    
+
     // 後で削除できるように、作成したdiv要素を呼び出し元に返す
-    return div; 
+    return div;
 }
 
 // ================================

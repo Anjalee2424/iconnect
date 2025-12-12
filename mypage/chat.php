@@ -136,6 +136,7 @@ function existsChatRoom($pdo, $user1_id, $user2_id)
     <script>
         const CHAT_HOST = '<?= CHAT_HOST ?>';
         const CHAT_PATH = '<?= CHAT_PATH ?>';
+        const API_HOST = '<?= API_HOST ?>';
         const ROOM_ID = '<?= $room_id ?>';
         const USER_ID = <?= $user_id ?>;
         const USER_NAME = '<?= htmlspecialchars($user['username']) ?>';

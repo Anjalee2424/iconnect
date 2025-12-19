@@ -66,34 +66,37 @@ function existsChatRoom($pdo, $user1_id, $user2_id)
 </head>
 
 <body class="bg-gray-100 h-screen flex flex-col items-center p-6">
-    <h1 class="text-3xl font-bold">Chart Room</h1>
+    <h1 class="text-2xl font-bold my-3">
+        Chart Room
+        <div id="user">
+            <img src="../<?= $user['picture'] ?>" class="w-10 h-10 rounded-full inline-block mr-2" />
+            <?= $user['nickname'] ?>
+        </div>
+    </h1>
+    <div class="flex gap-4 mb-4">
+        <div id="friend">
+            <img src="../<?= $friend['picture'] ?>" class="w-10 h-10 rounded-full inline-block mr-2" />
+            <?= $friend['nickname'] ?>
+        </div>
+    </div>
     <div class="text-xs">
         <?php if (defined('IS_DEBUG')): ?>
-        <div class="flex">
-            <span>HOST:</span>
-            <div id="host"></div>
-        </div>
-        <div class="flex">
-            <span>PATH:</span>
-            <div id="path"></div>
-        </div>
-        <div class="flex">
-            <span></span>
-            <div id="room_id"></div>
-        </div>
+            <div class="flex">
+                <span>HOST:</span>
+                <div id="host"></div>
+            </div>
+            <div class="flex">
+                <span>PATH:</span>
+                <div id="path"></div>
+            </div>
+            <div class="flex">
+                <span></span>
+                <div id="room_id"></div>
+            </div>
         <?php endif; ?>
-        <div class="flex">
-            <span></span>
-            <div id="user"><?= $user['nickname'] ?></div>
-        </div>
-        <div class="flex">
-            <span>Friend</span>
-            <div id="friend"><?= $friend['nickname'] ?></div>
-        </div>
     </div>
 
     <div class="w-full max-w-md mb-4 flex items-center justify-between">
-
         <div>
             <label for="langSelect" class="sr-only">Language</label>
             <div>

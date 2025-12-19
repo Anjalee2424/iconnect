@@ -66,9 +66,9 @@ function existsChatRoom($pdo, $user1_id, $user2_id)
 </head>
 
 <body class="bg-gray-100 h-screen flex flex-col items-center p-6">
-    <h1 class="text-2xl font-bold my-3">
+    <h1 class="text-2xl font-bold my-3 border-b">
         Chart Room
-        <div id="user">
+        <div id="user" class="mt-2">
             <img src="../<?= $user['picture'] ?>" class="w-10 h-10 rounded-full inline-block mr-2" />
             <?= $user['nickname'] ?>
         </div>
@@ -96,7 +96,7 @@ function existsChatRoom($pdo, $user1_id, $user2_id)
         <?php endif; ?>
     </div>
 
-    <div class="w-full max-w-md mb-4 flex items-center justify-between">
+    <div class="w-full max-w-md mb-2 flex items-center justify-between">
         <div>
             <label for="langSelect" class="sr-only">Language</label>
             <div>

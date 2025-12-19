@@ -22,9 +22,9 @@ let chat_path = (typeof CHAT_PATH !== "undefined")
 
 // ============== 修正箇所 ここまで ==============
 
-document.getElementById("host").textContent = chat_host;
-document.getElementById("path").textContent = chat_path;
-document.getElementById("room_id").textContent = ROOM_ID;
+// document.getElementById("host").textContent = chat_host;
+// document.getElementById("path").textContent = chat_path;
+// document.getElementById("room_id").textContent = ROOM_ID;
 
 // ================================
 // DOM要素取得
@@ -62,7 +62,7 @@ socket.on("chat_message", async (data) => {
     const { text, sender, lang: fromLang } = data;
 
     // 通常メッセージを表示
-    append(`${sender}: ${text}`, "message received");
+    append(`${sender}: ${text}`, "message received", fromLang);
 
     if (sender === userName) return; // 自分のメッセージは翻訳不要
 
@@ -117,14 +117,30 @@ form.addEventListener("submit", (e) => {
 // ================================
 // 表示関数
 // ================================
-function append(msg, className = "") {
+function append(msg, className = "", langCode = null) {
     const div = document.createElement("div");
-    div.innerHTML = msg;
-    if (className) div.className = className;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight; // 常にスクロール最下部
+    div.className = `flex items-center space-x-2 ${className}`;
 
-    // 後で削除できるように、作成したdiv要素を呼び出し元に返す
+    // メッセージ本文の作成
+    const span = document.createElement("span");
+    span.innerHTML = msg;
+    div.appendChild(span);
+
+    // 翻訳中やシステムメッセージ以外で、かつ言語コードがある場合にアイコンを表示
+    if (langCode && !className.includes("system")) {
+        const speakBtn = document.createElement("button");
+        speakBtn.innerHTML = "🔊";
+        speakBtn.className = "text-blue-500 hover:scale-110 transition-transform ml-2";
+        
+        // テキスト抽出（名前部分を除去して純粋なメッセージのみを渡す）
+        const cleanText = msg.includes(":") ? msg.split(":").slice(1).join(":").trim() : msg;
+        
+        speakBtn.onclick = () => speak(cleanText, langCode);
+        div.appendChild(speakBtn);
+    }
+
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
     return div;
 }
 
@@ -204,3 +220,31 @@ langSelect.addEventListener("change", () => {
     console.log("STT language set to:", langCode);
     if (!STT.isListening) micBtn.textContent = "🎤";
 });
+
+
+const speak = async (text, lang) => {
+    // Express API 経由で音声合成を実行
+    try {
+        const uri = `${API_HOST}/api/tts`;
+        console.log("TTS API URI:", uri);
+        const res = await fetch(uri, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text, lang }),
+        });
+        // ファイルパスを取得
+        const result = await res.json();
+        console.log("TTS API result:", result);
+        if (result.audioUrl) {
+            const audio = new Audio(result.audioUrl);
+            audio.play();
+        } else {
+            append("⚠️ 音声合成に失敗しました");
+        }
+    } catch (err) {
+        console.error("TTS API error:", err);
+        // エラー時も翻訳中メッセージを削除
+        if (loadingElement) loadingElement.remove();
+        append("⚠️ 音声合成に失敗しました（ネットワークエラー）");
+    }
+}

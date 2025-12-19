@@ -66,8 +66,9 @@ function existsChatRoom($pdo, $user1_id, $user2_id)
 </head>
 
 <body class="bg-gray-100 h-screen flex flex-col items-center p-6">
-    <h2>Chart Room</h2>
+    <h1 class="text-3xl font-bold">Chart Room</h1>
     <div class="text-xs">
+        <?php if (defined('IS_DEBUG')): ?>
         <div class="flex">
             <span>HOST:</span>
             <div id="host"></div>
@@ -77,12 +78,17 @@ function existsChatRoom($pdo, $user1_id, $user2_id)
             <div id="path"></div>
         </div>
         <div class="flex">
-            <span>ROOM ID:</span>
-            <div id="room_id"><?= $room_id ?></div>
+            <span></span>
+            <div id="room_id"></div>
+        </div>
+        <?php endif; ?>
+        <div class="flex">
+            <span></span>
+            <div id="user"><?= $user['nickname'] ?></div>
         </div>
         <div class="flex">
-            <span>FRIEND ID:</span>
-            <div id="friend_id"><?= $friend_id ?></div>
+            <span>Friend</span>
+            <div id="friend"><?= $friend['nickname'] ?></div>
         </div>
     </div>
 

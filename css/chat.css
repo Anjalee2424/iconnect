@@ -20,6 +20,12 @@ body {
     overflow: hidden;
 }
 
+#chat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .chat-header {
     padding: 15px;
     border-bottom: 1px solid #eee;
@@ -56,9 +62,10 @@ body {
 }
 
 .sent {
-    background: linear-gradient(135deg, #7c4dff, #c47dff, #fcaee4);
+    background: linear-gradient(135deg, #7c4dff, #c47dff, #46303f);
     color: white;
     align-self: flex-end;
+    margin-left: auto;
     border-bottom-right-radius: 4px;
 }
 
@@ -99,13 +106,21 @@ body {
 /* 翻訳中のパルスアニメーション */
 .translating-pulse {
     color: #666;
-    
+
     font-style: italic;
     animation: pulse 1.5s infinite ease-in-out;
 }
 
 @keyframes pulse {
-    0% { opacity: 0.4; }
-    50% { opacity: 1; }
-    100% { opacity: 0.4; }
+    0% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.4;
+    }
 }

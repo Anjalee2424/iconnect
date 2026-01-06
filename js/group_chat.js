@@ -1,10 +1,12 @@
 // ================================
 // 環境チェック
 // ================================
-console.log("ROOM_ID:", ROOM_ID);
-console.log("USER_NICKNAME:", USER_NICKNAME);
 if (typeof ROOM_ID === "undefined" || ROOM_ID === "") {
     alert("ROOM_IDが設定されていません");
+}
+
+if (typeof USER_NAME === "undefined" || USER_NAME === "") {
+    alert("USER_NAMEが設定されていません");
 }
 
 const userName = USER_NICKNAME;
@@ -43,30 +45,9 @@ const socket = io(
 socket.on("connect", () => {
     console.log("🟢 Connected:", socket.id);
     socket.name = userName;
-    socket.emit("join_room", { roomId, userName, userId });
+    socket.emit("join_room", { roomId, userName });
     append(`🟢 ${userName} joined the chat`, "system message");
 });
-
-
-// ================================
-// 参加者リスト更新
-// ================================
-socket.on("user_list", (users) => {
-    console.log("現在の参加者:", users);
-    renderUserList(users);
-});
-
-function renderUserList(users) {
-    const listElement = document.getElementById("userList");
-    listElement.innerHTML = users.map(u => 
-        `
-        <li class="flex items-center mb-2">
-            <img src="${u.avatarUrl || '../uploads/users/' + u.id + '.jpg'}" alt="avatar" class="inline-block w-6 h-6 rounded-full mr-2 align-middle">
-            <span class="align-middle mr-2 ${u.id === userId ? 'font-bold' : ''}">${u.nickname}</span>
-        </li>
-        `
-    ).join("");
-}
 
 // ================================
 // メッセージ受信
@@ -120,7 +101,7 @@ form.addEventListener("submit", (e) => {
     const text = input.value.trim();
     if (!text) return;
 
-    append(text, "message sent justify-end");
+    append(text, "message sent");
 
     const lang = langSelect.value;
     socket.emit("send_message", { text, roomId, sender: userName, lang });

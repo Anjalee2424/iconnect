@@ -16,16 +16,16 @@ if (!$user_id) {
 
 <head>
     <meta charset="UTF-8" />
-    <title>Socket.io Chat</title>
+    <title>Group Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/mypage.css">
 </head>
 
-<body class="bg-gray-100 flex flex-col p-6">
-    <h1 class="text-2xl font-bold mb-4 border-b flex justify-between items-center">Chat Room</h1>
-
-    <div>
+<body class="bg-gray-100 flex flex-col">
+    <div class="p-6">
+        <h1 class="text-2xl font-bold mb-4 border-b flex justify-between items-center">Chat Room</h1>
         <ul class="space-y-4">
             <?php foreach ($chat_rooms as $room): ?>
                 <li>
@@ -38,6 +38,7 @@ if (!$user_id) {
             <?php endforeach; ?>
         </ul>
     </div>
-</body>
 
+    <?php include '../components/user_menu.php'; ?>
+</body>
 </html>

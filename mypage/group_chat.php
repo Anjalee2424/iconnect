@@ -1,11 +1,18 @@
 <?php
 require_once '../app.php';
+require_once '../rooms.php';
 
 $user_id = $_SESSION['user_id'] ?? null;
 $room_id = $_GET['room_id'] ?? null;
 
 if (!$user_id || !$room_id) {
     header('Location: ../login.php');
+    exit;
+}
+
+$room = getRoomById($room_id);
+if (!$room) {
+    header('Location: chat_room.php');
     exit;
 }
 
@@ -21,7 +28,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 <head>
     <meta charset="UTF-8" />
-    <title>Socket.io Chat</title>
+    <title>iConnect</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,7 +36,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 </head>
 
 <body class="bg-gray-100 h-screen flex flex-col items-center p-6">
-    <h1 class="text-2xl font-bold mb-4 border-b flex justify-between items-center">Chat Room</h1>
+    <h1 class="text-2xl font-bold mb-4 border-b flex justify-between items-center"><?= htmlspecialchars($room['name']) ?></h1>
 
     <div class="flex flex-1 gap-4 w-full max-w-6xl mx-auto overflow-hidden">
 

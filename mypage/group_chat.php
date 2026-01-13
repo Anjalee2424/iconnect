@@ -35,37 +35,37 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../css/chat.css" />
 </head>
 
-<body class="bg-gray-100 h-screen flex flex-col items-center p-6">
-    <h1 class="text-2xl font-bold mb-4 border-b flex justify-between items-center"><?= htmlspecialchars($room['name']) ?></h1>
+<body class="bg-gray-100 h-[100dvh] flex flex-col items-center p-2 md:p-6 overflow-hidden">
+    <h1 class="text-xl md:text-2xl font-bold mb-2 md:mb-4 border-b w-full max-w-6xl text-center">
+        <?= htmlspecialchars($room['name']) ?>
+    </h1>
 
     <div class="flex flex-1 gap-4 w-full max-w-6xl mx-auto overflow-hidden">
-
         <div class="flex-1 flex flex-col min-w-0">
             <div class="mb-2">
-                <select id="langSelect" class="border rounded px-2 py-1 text-sm">
+                <select id="langSelect" class="border rounded px-2 py-1 text-sm w-full md:w-auto">
                     <?php foreach (Lang::langs as $code => $info): ?>
                         <option value="<?= htmlspecialchars($code) ?>"><?= htmlspecialchars($info['label']) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
 
-            <div id="chat-box" class="flex-1 overflow-y-auto border rounded-lg bg-white shadow p-4 mb-4">
+            <div id="chat-box" class="flex-1 overflow-y-auto border rounded-lg bg-white shadow p-4 mb-2 md:mb-4">
             </div>
 
-            <form id="chatForm" class="flex space-x-2" autocomplete="off">
-                <input id="msgInput" type="text" placeholder="メッセージを入力..."
-                    class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                <button type="submit" id="sendBtn" class="bg-blue-500 text-white rounded-lg px-6 hover:bg-blue-600 transition">送信</button>
+            <form id="chatForm" class="flex space-x-2 pb-2" autocomplete="off">
+                <input id="msgInput" type="text" placeholder="メッセージ..."
+                    class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base" />
+                <button type="submit" id="sendBtn" class="bg-blue-500 text-white rounded-lg px-4 md:px-6 hover:bg-blue-600 transition">送信</button>
                 <button type="button" id="micBtn" class="bg-gray-300 text-black rounded-lg px-3 hover:bg-gray-400">🎤</button>
             </form>
         </div>
 
-        <div class="w-48 md:w-64 flex flex-col border rounded-lg bg-white shadow overflow-hidden">
+        <div class="hidden md:flex w-64 flex-col border rounded-lg bg-white shadow overflow-hidden">
             <div class="bg-gray-200 px-4 py-2 font-bold text-sm border-b">Join Users</div>
             <div id="userList" class="flex-1 overflow-y-auto p-2 space-y-2">
             </div>
         </div>
-
     </div>
 
     <script>

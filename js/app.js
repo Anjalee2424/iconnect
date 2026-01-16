@@ -7,6 +7,7 @@ if (typeof ROOM_ID === "undefined" || ROOM_ID === "") {
     alert("ROOM_IDが設定されていません");
 }
 
+
 const userName = USER_NICKNAME;
 const roomId = ROOM_ID;
 let chat_host = (typeof CHAT_HOST !== "undefined") 
@@ -116,6 +117,12 @@ socket.on("chat_message", async (data) => {
 // メッセージ送信
 // ================================
 form.addEventListener("submit", (e) => {
+    // 変換中のEnterキーなら、送信処理をスキップする
+    if (isComposing) {
+        e.preventDefault();
+        return;
+    }
+
     e.preventDefault();
     const text = input.value.trim();
     if (!text) return;
@@ -203,17 +210,25 @@ STT.onText = (text) => { input.value = text; };
 // 音声認識終了時
 STT.onEnd = () => { micBtn.textContent = "🎤"; };
 
+input.addEventListener("focus", () => {
+    if (STT.isListening) {
+        STT.stop();
+        micBtn.textContent = "🎤";
+    }
+});
+
 // マイクボタンで STT 開始/停止
+// マイクボタン内の修正
 micBtn.addEventListener("click", () => {
     if (!STT.isListening) {
-        // 選択中の option の data-lang を取得
         const selectedOption = langSelect.selectedOptions[0];
-        const langCode = selectedOption?.dataset.lang;
-        console.log("STT initialized with lang:", langCode);
+        
+        // 修正：dataset.lang が無ければ value を、それも無ければ 'ja-JP' を使う
+        const langCode = selectedOption?.dataset.lang || selectedOption?.value || "ja-JP";
+        
+        console.log("STT starting with lang:", langCode); // 確認用
 
-        // 古いインスタンス停止
         if (STT.recognition) STT.stop();
-
         STT.init(langCode);
         STT.start();
         micBtn.textContent = "🎙️ 受付中...";
@@ -223,7 +238,6 @@ micBtn.addEventListener("click", () => {
     }
 });
 
-
 // 言語変更時にも STT 言語更新（マイク未押下時）
 langSelect.addEventListener("change", () => {
     const selectedOption = langSelect.selectedOptions[0];
@@ -232,6 +246,20 @@ langSelect.addEventListener("change", () => {
     STT.init(langCode);
     console.log("STT language set to:", langCode);
     if (!STT.isListening) micBtn.textContent = "🎤";
+});
+
+
+// ================================
+// IME変換状態の管理
+// ================================
+let isComposing = false; // 変換中フラグ
+
+input.addEventListener('compositionstart', () => {
+    isComposing = true;
+});
+
+input.addEventListener('compositionend', () => {
+    isComposing = false;
 });
 
 

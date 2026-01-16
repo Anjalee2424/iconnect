@@ -280,6 +280,7 @@ const speak = async (text, lang, btn) => {
         // ファイルパスを取得
         const result = await res.json();
         console.log("TTS API result:", result);
+        console.log("Audio URL:", result.audioUrl);
         if (result.audioUrl) {
             const audio = new Audio(result.audioUrl);
             audio.play();
